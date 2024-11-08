@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.inputs.target }}
-          path: output/images/*
+          path: output/images/Armbian_24.03_Aml-s812_jammy_current_5.9.0-rc7_minimal.img
       - name: Upload to release
         uses: softprops/action-gh-release@v1
         with:
