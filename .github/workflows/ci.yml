@@ -24,16 +24,16 @@ jobs:
       
       - name: Checkout armbian/build
         run: |
-          git clone --depth=1 --branch=main https://github.com/mofeng-git/Build-Armbian
+          git clone --depth=1 --branch=main https://github.com/mofeng-git/build
       - name: Build for aml-s812
         run: |
-          cd Build-Armbian
-          sudo ./compile.sh  BOARD=aml-s812 BRANCH=current RELEASE=jammy BUILD_MINIMAL=yes BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,gpg,img DOWNLOAD_MIRROR=china MAINLINE_MIRROR=tuna EXTRAWIFI=no
+          cd build
+          sudo ./compile.sh  BOARD=onecloud BRANCH=legacy RELEASE=jammy BUILD_MINIMAL=yes BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,gpg,img DOWNLOAD_MIRROR=china MAINLINE_MIRROR=tuna EXTRAWIFI=no
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ${{ github.event.inputs.target }}
-          path: output/images/Armbian_24.03_Aml-s812_jammy_current_5.9.0-rc7_minimal.img
+          path: output/images/Armbian_by-SilentWind_24.5.0-trunk_Onecloud_jammy_legacy_5.9.0-rc7_minimal.img
       - name: Upload to release
         uses: softprops/action-gh-release@v1
         with:
