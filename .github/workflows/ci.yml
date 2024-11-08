@@ -17,6 +17,10 @@ jobs:
           swap-size-mb: 2266
           remove-dotnet: 'true'
           remove-android: 'true'
+      - name: install dep
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl jq gpg libfdt-dev python3-pyquery wget xz-utils make gcc-arm-linux-gnueabihf flex bison dpkg-dev bc rsync kmod cpio libssl-dev git lsb vim libelf-dev neofetch python3-pip python3-tk debhelper zstd dpkg-sig mmdebstrap qemu-user-static usrmerge binfmt-support systemd-container
       
       - name: Checkout armbian/build
         run: |
@@ -25,11 +29,17 @@ jobs:
       - name: Build for onecloud
         run: |
           cd Build-Armbian
-          ./compile.sh BOARD="odroidxu4" BRANCH="current" RELEASE="bullseye" KERNEL_ONLY="no" KERNEL_CONFIGURE="no" BUILD_DESKTOP="no" BUILD_MINIMAL="yes"
-
+          ./compile.sh BOARD="aml-s812" BRANCH="current" RELEASE="bullseye" KERNEL_ONLY="no" KERNEL_CONFIGURE="no" BUILD_DESKTOP="no" BUILD_MINIMAL="yes"
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.RELEASE }}-${{ matrix.BRANCH }}-${{ matrix.TYPE == 'desktop' && matrix.DESKTOP_ENVIRONMENT || matrix.TYPE }}
           path: output/images/*
-
+      - name: Upload to release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.TAG }}
+          append_body: true
+          body_path: Release.md
+          files: |
+            output/images/*
